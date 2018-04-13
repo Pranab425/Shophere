@@ -7,27 +7,21 @@ package shophere;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
 /**
  *
- * @author 1406450
+ * @author 1406425
  */
-@WebServlet(name = "LoginValidate", urlPatterns = {"/LoginValidate"})
-public class LoginValidate extends HttpServlet {
+public class sellersignup extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,57 +35,41 @@ public class LoginValidate extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-           String u = request.getParameter("username");
-            String p = request.getParameter("password");
-            String enc = DatatypeConverter.printBase64Binary(p.getBytes());
-             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://:3306/shophere","root","1406425");
-             Statement st = (Statement) con.createStatement();
-           ResultSet rs = st.executeQuery("select * from login where username='" + u + "' and password='" + enc+ "'");
-    
+        PrintWriter out = response.getWriter(); 
+        String name = request.getParameter("name");
+        String uname = request.getParameter("username");
+        String pass = request.getParameter("password");
+        String uppass = DatatypeConverter.printBase64Binary(pass.getBytes());
+        String phone = request.getParameter("phone");
+        String type = "seller";
+        try{
         
-    if (rs.next()) {
-        HttpSession s=request.getSession();
-      s.setAttribute("username", u);
-      ArrayList<Cartdata> cartdata = new ArrayList<Cartdata>();
-      s.setAttribute("cartvalue", cartdata);
-        //out.println("welcome " + userid);
-        //out.println("<a href='logout.jsp'>Log out</a>");s
-       // response.sendRedirect("adminhome.jsp");
-        String sa=rs.getString(5);
-        {
-            if(sa.equals("admin"))
-            {
-                RequestDispatcher rd=request.getRequestDispatcher("adminhome.jsp");
-                rd.forward(request, response);
-            }
-            if(sa.equals("user"))
-            {
-                RequestDispatcher rd=request.getRequestDispatcher("userhome.jsp");
-                rd.forward(request, response); 
-            }
-            if(sa.equals("seller"))
-            {
-                RequestDispatcher rd=request.getRequestDispatcher("sellerhome.jsp");
-                rd.forward(request, response); 
-            }
+        //loading drivers for mysql
+        Class.forName("com.mysql.jdbc.Driver");
+
+	//creating connection with the database 
+          Connection  con=DriverManager.getConnection("jdbc:mysql://localhost:3306/shophere","root","1406425");
+
+        PreparedStatement ps=con.prepareStatement("insert into login values(?,?,?,?,?)");
+out.println("sbdhb");
+        ps.setString(1, name);
+        ps.setString(3, uname);
+        ps.setString(2, uppass);
+        ps.setString(4, phone);
+        ps.setString(5, type);
+        int i=ps.executeUpdate();
+          if(i>0)
+          {
+              RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+              rd.forward(request, response);
+            out.println("You are sucessfully registered");
+            out.println("LOGIN AGAIN TO CONTINUE!!");
+          }
+        
         }
-    } else {
-          RequestDispatcher rd=request.getRequestDispatcher("login.jsp");
-                rd.forward(request, response);
-        out.println("Invalid user<a href='login.jsp'>try again</a>");
-    }
-    }
-    catch(Exception e)
-    {
-        System.out.println(e);
-    }
-           
-          
-         finally {
-            out.close();
+        catch(Exception se)
+        {
+            se.printStackTrace();
         }
     }
 

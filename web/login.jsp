@@ -21,7 +21,7 @@
     <jsp:include page="signup.html" />
 </td>
 <tr>
-<a href="seller.jsp">IF YOU ARE A SELLER AND WANT TO SELL YOUR PRODUCT THEN FILL THIS FORM</a>
+<a href="addseller.jsp">IF YOU ARE A SELLER AND WANT TO SELL YOUR PRODUCT THEN FILL THIS FORM</a>
 </table>
         
         </body>

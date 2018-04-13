@@ -9,18 +9,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author 1406425
  */
-@WebServlet(name = "copy2product", urlPatterns = {"/copy2product"})
-public class copy2product extends HttpServlet {
+public class addcomment extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,36 +31,18 @@ public class copy2product extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            HttpSession session = request.getSession();
-            if ((session.getAttribute("username") == null) || (session.getAttribute("username") == "")) {
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
-        }
-        else{
+        PrintWriter out = response.getWriter();
         String id = request.getParameter("id");
-        String q = "insert into product select id,name,model_no,details,price,pic,category from temp where id='"+id+"';";
-        int a = shophere.Daolayer.updateData(q);
-        if(a>0){
-            String qw = "update temp set status = 'verified' where id='"+id+"';";
-            int b = shophere.Daolayer.updateData(qw);
-            if(b>0){
-                String message = "Data is sent to main product table and updated temporary table";
-                session.setAttribute("message", message);
-                RequestDispatcher rd = request.getRequestDispatcher("/adminhome.jsp");
-            rd.forward(request, response);
-            }
-            else{
-                String message = "Data is sent to main product table BUT CAN'T BE UPDATED IN TEMPORARY TABLE";
-                RequestDispatcher rd = request.getRequestDispatcher("/adminhome.jsp");
-            rd.forward(request, response);
-            }
-        }
-        RequestDispatcher rd = request.getRequestDispatcher("/adminhome.jsp");
-            rd.forward(request, response);
+        String name = request.getParameter("name");
+        String comment = request.getParameter("comment");
+        String q = "insert into comment(cus_name,comment,pid) values('"+name+"','"+comment+"','"+id+"');";
+        int i = Daolayer.updateData(q);
+        if(i>0){
+            RequestDispatcher rd = request.getRequestDispatcher("viewdesc?id="+id+"");
+              rd.forward(request, response);
         }
     }
-    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

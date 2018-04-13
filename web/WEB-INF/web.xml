@@ -56,6 +56,18 @@
         <servlet-name>newproduct</servlet-name>
         <servlet-class>shophere.newproduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>sellersignup</servlet-name>
+        <servlet-class>shophere.sellersignup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleterequest</servlet-name>
+        <servlet-class>shophere.deleterequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>addcomment</servlet-name>
+        <servlet-class>shophere.addcomment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
@@ -111,6 +123,18 @@
     <servlet-mapping>
         <servlet-name>newproduct</servlet-name>
         <url-pattern>/newproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sellersignup</servlet-name>
+        <url-pattern>/sellersignup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleterequest</servlet-name>
+        <url-pattern>/deleterequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addcomment</servlet-name>
+        <url-pattern>/addcomment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

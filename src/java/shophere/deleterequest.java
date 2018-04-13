@@ -10,24 +10,19 @@ import java.io.PrintWriter;
 import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  *
- * @author 1406450
+ * @author 1406425
  */
-@WebServlet(name = "LoginValidate", urlPatterns = {"/LoginValidate"})
-public class LoginValidate extends HttpServlet {
+public class deleterequest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,54 +38,29 @@ public class LoginValidate extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           String u = request.getParameter("username");
-            String p = request.getParameter("password");
-            String enc = DatatypeConverter.printBase64Binary(p.getBytes());
-             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://:3306/shophere","root","1406425");
-             Statement st = (Statement) con.createStatement();
-           ResultSet rs = st.executeQuery("select * from login where username='" + u + "' and password='" + enc+ "'");
-    
-        
-    if (rs.next()) {
-        HttpSession s=request.getSession();
-      s.setAttribute("username", u);
-      ArrayList<Cartdata> cartdata = new ArrayList<Cartdata>();
-      s.setAttribute("cartvalue", cartdata);
-        //out.println("welcome " + userid);
-        //out.println("<a href='logout.jsp'>Log out</a>");s
-       // response.sendRedirect("adminhome.jsp");
-        String sa=rs.getString(5);
-        {
-            if(sa.equals("admin"))
-            {
-                RequestDispatcher rd=request.getRequestDispatcher("adminhome.jsp");
-                rd.forward(request, response);
-            }
-            if(sa.equals("user"))
-            {
-                RequestDispatcher rd=request.getRequestDispatcher("userhome.jsp");
-                rd.forward(request, response); 
-            }
-            if(sa.equals("seller"))
-            {
-                RequestDispatcher rd=request.getRequestDispatcher("sellerhome.jsp");
-                rd.forward(request, response); 
-            }
+            HttpSession session = request.getSession();
+            if ((session.getAttribute("username") == null) || (session.getAttribute("username") == "")) {
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
         }
-    } else {
-          RequestDispatcher rd=request.getRequestDispatcher("login.jsp");
-                rd.forward(request, response);
-        out.println("Invalid user<a href='login.jsp'>try again</a>");
-    }
-    }
-    catch(Exception e)
-    {
-        System.out.println(e);
-    }
-           
-          
-         finally {
+        else{
+            String id = request.getParameter("id");
+              Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://:3306/shophere","root","1406425");
+            PreparedStatement st= con.prepareStatement("delete from temp where id = (?)");
+            st.setString(1, id);
+            st.executeUpdate();
+         int i = st.executeUpdate();
+         if(i>0){
+             RequestDispatcher rd = request.getRequestDispatcher("sellerhome.jsp");
+            rd.forward(request, response);
+         }
+        }
+        }        
+            catch (Exception e) {
+            System.out.println("exceptions caught"+e);
+            }
+        finally {
             out.close();
         }
     }

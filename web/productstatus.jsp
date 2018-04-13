@@ -1,4 +1,9 @@
 <%-- 
+    Document   : productstatus
+    Created on : Apr 4, 2018, 10:09:57 AM
+    Author     : 1406425
+--%>
+<%-- 
     Document   : newrequest
     Created on : 7 Dec, 2017, 4:18:57 PM
     Author     : 1406425
@@ -20,10 +25,10 @@
     </head>
     <body style="text-align: center">
         
-        <form action="copy2product" method="get">
+        <form action="deleterequest" method="post">
 <BR><center><TABLE BORDER="1">
    
-        <tr>
+        <tr>   
             <th>PIC</th>
             <th>ID</th>
             <th>NAME</th>
@@ -33,7 +38,7 @@
             <th>CATEGORY</th>
             <th>STATUS</th>
             <th>PERFORM ACTION</th>
-        </tr>   
+        </tr>
 <%
       
           String q="select * from temp";
@@ -52,7 +57,7 @@
                <TD> <%= resultset.getString(5) %> </TD>
                <TD> <%= resultset.getString(7) %> </TD>
                <TD> <%= resultset.getString(8) %> </TD>
-               <TD> <button type='submit' name='id' value='<%= resultset.getString(1) %>'>ADD THIS PRODUCT</button> </TD>
+               <TD> <button type='submit' name='id' value='<%= resultset.getString(1) %>'>REMOVE PRODUCT</button> </TD>
            </TR>
     <%
 } 
@@ -70,3 +75,4 @@ catch(Exception e){
         <jsp:include page="footer.html" />
     </body>
 </html>
+

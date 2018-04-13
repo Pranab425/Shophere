@@ -39,6 +39,7 @@ public class sellerverify extends HttpServlet {
          String detail = request.getParameter("wdet");
          String price = request.getParameter("wpri");
          String categ = request.getParameter("categ");
+         String status = "processing";
         InputStream inputStream = null; // input stream of the upload file
          
         // obtains the upload file part in this multipart request
@@ -62,7 +63,7 @@ public class sellerverify extends HttpServlet {
             conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
  
             // constructs SQL statement
-            String sql = "INSERT INTO temp values (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO temp values (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, id);
             statement.setString(2, Name);
@@ -70,7 +71,7 @@ public class sellerverify extends HttpServlet {
             statement.setString(4, detail);
             statement.setString(5, price);
             statement.setString(7, categ);
-            
+            statement.setString(8, status);
             if (inputStream != null) {
                 // fetches input stream of the upload file for the blob column
                 statement.setBlob(6, inputStream);
@@ -80,7 +81,7 @@ public class sellerverify extends HttpServlet {
             int row = statement.executeUpdate();
             if (row > 0) {
                 message = "Data uploaded and saved into database";
-                RequestDispatcher rd = request.getRequestDispatcher("userhome.jsp"+message);
+                RequestDispatcher rd = request.getRequestDispatcher("sellerhome.jsp"+message);
             rd.include(request, response);
             }
         } catch (SQLException ex) {
@@ -99,7 +100,7 @@ public class sellerverify extends HttpServlet {
             request.setAttribute("Message", message);
              
             // forwards to the message page
-            getServletContext().getRequestDispatcher("/userhome.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/sellerhome.jsp").forward(request, response);
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -51,7 +51,65 @@ ResultSet rs = pst.executeQuery();
                out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title></title>");            
+            out.println("<title></title><style>* {\n" +
+"  -moz-box-sizing: border-box;\n" +
+"  -webkit-box-sizing: border-box;\n" +
+"  box-sizing: border-box;\n" +
+"  margin: 0;\n" +
+"  padding: 0;"
+                    + "border: none !important;\n" +
+"}\n" +
+"\n" +
+".item {\n" +
+"  position: relative;\n" +
+"  \n" +
+"  border: 1px solid #333;\n" +
+"  margin: 2%;\n" +
+"  overflow: hidden;\n" +
+"  width: 540px;"
+                    + "\n" +
+"}\n" +
+".item img {\n" +
+"  max-width: 100%;\n" +
+"  \n" +
+"  -moz-transition: all 0.3s;\n" +
+"  -webkit-transition: all 0.3s;\n" +
+"  transition: all 0.3s;"
+                    + "border: none !important;\n" +
+"}\n" +
+".item:hover img {\n" +
+"  -moz-transform: scale(1.1);\n" +
+"  -webkit-transform: scale(1.1);\n" +
+"  transform: scale(1.1);\n" +
+"}* {\n" +
+"  -moz-box-sizing: border-box;\n" +
+"  -webkit-box-sizing: border-box;\n" +
+"  box-sizing: border-box;\n" +
+"  margin: 0;\n" +
+"  padding: 0;\n" +
+"}\n" +
+"\n" +
+".item {\n" +
+"  position: relative;\n" +
+"  \n" +
+"  border: 1px solid #333;\n" +
+"  margin: 2%;\n" +
+"  overflow: hidden;\n" +
+"  width: 540px;\n" +
+"}\n" +
+".item img {\n" +
+"  max-width: 100%;\n" +
+"  \n" +
+"  -moz-transition: all 0.3s;\n" +
+"  -webkit-transition: all 0.3s;\n" +
+"  transition: all 0.3s;\n" +
+"}\n" +
+".item:hover img {\n" +
+"  -moz-transform: scale(1.1);\n" +
+"  -webkit-transform: scale(1.1);\n" +
+"  transform: scale(1.1);"
+                    + "border: none !important;\n" +
+"}</style>");            
             out.println("</head>");
             out.println("<center>");
             out.println("<table><center>");
@@ -59,7 +117,7 @@ ResultSet rs = pst.executeQuery();
             while(rs.next())
             {
                String id = rs.getString(1);
-               out.println("<img src='getpic?id="+id+"' width='400' height='300' /></a><br>");
+               out.println("<div class='item'><img src='getpic?id="+id+"' width='400' height='300' /><div class=\"item-overlay top\"></div></div></a><br>");
                out.println("<div style=\"width:400px;\">\n<div style=\"float: left; \">");
                out.println("<form action='wishlist'><button type='submit' name='wid' value='"+id+"'>ADD TO WISHLIST</button></form>");
                out.println("</div><div style=\"float: right; \">");
@@ -69,7 +127,15 @@ ResultSet rs = pst.executeQuery();
                out.println("<h3><b>Product ID:-</b>"+rs.getString(3)+"</h3><br>");
                out.println("<h3><b>Product Description:-</b>"+rs.getString(4)+"</h3><br>");
                out.println("<h2><b>PRICE:-</b>"+rs.getString(5)+"</h2>");
-               out.println("</center><br></td></form>");
+               out.println("</center><br></td><tr><td><h3></form><div style='bgcolor: grey'><form action='addcomment'>Enter Your Comments:-</h3>");
+               out.println("<br>Name:-  <input type='text' name='name' value='' required><br>");
+               out.println("<br>Comment:-  <input type='textarea' rows='4' column='50' name='comment' value='' required>");
+               out.println("<br><br><br><input type='hidden' name='id' value='"+id+"'>");
+               out.println("<input type='submit' value='submit'></form></div>");
+               out.println("</td></tr><tr><td>");
+               RequestDispatcher rd=request.getRequestDispatcher("comment.jsp");
+           rd.include(request, response);
+               out.println("</td></tr>");
             }
               RequestDispatcher rd=request.getRequestDispatcher("userheader.jsp");
            rd.include(request, response);
